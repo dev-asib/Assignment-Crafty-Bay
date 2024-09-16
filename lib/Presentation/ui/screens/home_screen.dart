@@ -1,4 +1,4 @@
-import 'package:crafty_bay/Presentation/ui/screens/category_list_screen.dart';
+import 'package:crafty_bay/Presentation/state_holders/main_bottom_nav_controller.dart';
 import 'package:crafty_bay/Presentation/ui/utils/assets_path.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
         SectionHeader(
             title: "Categories",
             onTap: () {
-              Get.to(() => const CategoryListScreen());
+              Get.find<MainBottomNavController>().selectCategory();
             }),
         const SizedBox(height: 8),
         const SizedBox(
