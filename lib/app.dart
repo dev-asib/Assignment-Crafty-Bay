@@ -13,6 +13,14 @@ class CraftyBay extends StatelessWidget {
       theme: ThemeData(
         colorSchemeSeed: AppColors.themeColor,
         scaffoldBackgroundColor: AppColors.whiteColor,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
         progressIndicatorTheme: const ProgressIndicatorThemeData(
           color: AppColors.themeColor,
         ),
@@ -23,16 +31,15 @@ class CraftyBay extends StatelessWidget {
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
-          border: _outlineInputBorder(),
-          focusedBorder: _outlineInputBorder(),
-          enabledBorder: _outlineInputBorder(),
-          errorBorder: _outlineInputBorder(Colors.red),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          hintStyle: const TextStyle(
-            color: Colors.grey,
-          )
-        ),
+            border: _outlineInputBorder(),
+            focusedBorder: _outlineInputBorder(),
+            enabledBorder: _outlineInputBorder(),
+            errorBorder: _outlineInputBorder(Colors.red),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            hintStyle: const TextStyle(
+              color: Colors.grey,
+            )),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.themeColor,
@@ -46,11 +53,10 @@ class CraftyBay extends StatelessWidget {
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            foregroundColor: AppColors.themeColor,
-            textStyle: const TextStyle(
-              fontSize: 16,
-            )
-          ),
+              foregroundColor: AppColors.themeColor,
+              textStyle: const TextStyle(
+                fontSize: 16,
+              )),
         ),
       ),
     );

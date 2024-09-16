@@ -1,11 +1,9 @@
+import 'package:crafty_bay/Presentation/ui/screens/category_list_screen.dart';
 import 'package:crafty_bay/Presentation/ui/utils/assets_path.dart';
-import 'package:crafty_bay/Presentation/ui/widgets/app_bar_icon.dart';
-import 'package:crafty_bay/Presentation/ui/widgets/category_item.dart';
-import 'package:crafty_bay/Presentation/ui/widgets/home_banner_slider.dart';
-import 'package:crafty_bay/Presentation/ui/widgets/search_text_field.dart';
-import 'package:crafty_bay/Presentation/ui/widgets/section_header.dart';
+import 'package:crafty_bay/Presentation/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -14,44 +12,80 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            SearchTextField(textEditingController: TextEditingController()),
-            const SizedBox(height: 16),
-            const HomeBannerSlider(),
-            const SizedBox(height: 16),
-            HeaderSection(title: "Category", onTap: () {}),
-            const SizedBox(height: 8),
-            _buildCategoriesSection(),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 16),
+              SearchTextField(textEditingController: TextEditingController()),
+              const SizedBox(height: 16),
+              const HomeBannerSlider(),
+              const SizedBox(height: 16),
+              _buildCategoriesSection(),
+              _buildPopularProductSection(),
+              const SizedBox(height: 16),
+              _buildNewProductSection(),
+              const SizedBox(height: 16),
+              _buildSpecialProductSection(),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildCategoriesSection() {
-    return SizedBox(
-      height: 140,
-      child: _buildCategoriesListView(),
+  Widget _buildNewProductSection() {
+    return Column(
+      children: [
+        SectionHeader(title: "New", onTap: () {}),
+        const SizedBox(
+          height: 180,
+          child: HorizontalProductListView(),
+        ),
+      ],
     );
   }
 
-  Widget _buildCategoriesListView() {
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return const CategoryItem(
-          iconData: Icons.computer,
-          label: 'Electronics',
-        );
-      },
-      separatorBuilder: (_, __) {
-        return const SizedBox(width: 8);
-      },
+  Widget _buildSpecialProductSection() {
+    return Column(
+      children: [
+        SectionHeader(title: "Special", onTap: () {}),
+        const SizedBox(
+          height: 180,
+          child: HorizontalProductListView(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPopularProductSection() {
+    return Column(
+      children: [
+        SectionHeader(title: "Popular", onTap: () {}),
+        const SizedBox(
+          height: 180,
+          child: HorizontalProductListView(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoriesSection() {
+    return Column(
+      children: [
+        SectionHeader(
+            title: "Categories",
+            onTap: () {
+              Get.to(() => const CategoryListScreen());
+            }),
+        const SizedBox(height: 8),
+        const SizedBox(
+          height: 120,
+          child: HorizontalCategoryListView(),
+        ),
+      ],
     );
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HeaderSection extends StatelessWidget {
-  const HeaderSection({
+class SectionHeader extends StatelessWidget {
+  const SectionHeader({
     super.key,
     required this.title,
     required this.onTap,
@@ -15,7 +15,12 @@ class HeaderSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
         TextButton(
           onPressed: onTap,
           child: const Text("See All"),

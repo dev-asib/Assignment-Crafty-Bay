@@ -1,8 +1,8 @@
 import 'package:crafty_bay/Presentation/ui/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class CategoryItem extends StatelessWidget {
-  const CategoryItem({
+class CategoryCard extends StatelessWidget {
+  const CategoryCard({
     super.key,
     required this.iconData,
     required this.label,
