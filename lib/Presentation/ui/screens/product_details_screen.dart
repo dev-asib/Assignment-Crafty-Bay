@@ -3,6 +3,7 @@ import 'package:crafty_bay/Presentation/ui/widgets/color_picker.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/size_picker.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:item_count_number_button/item_count_number_button.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -18,7 +19,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const Text("Product Details"),
