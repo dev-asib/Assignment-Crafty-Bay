@@ -72,4 +72,12 @@ class _CreateReviewScreenState extends State<CreateReviewScreen> {
       title: const Text("Create Review"),
     );
   }
+
+  @override
+  void dispose() {
+    _firstNameTEController.dispose();
+    _lastNameTEController.dispose();
+    _reviewTEController.dispose();
+    super.dispose();
+  }
 }
