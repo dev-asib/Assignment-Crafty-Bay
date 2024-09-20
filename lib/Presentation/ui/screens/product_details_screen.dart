@@ -1,3 +1,4 @@
+import 'package:crafty_bay/Presentation/ui/screens/reviews_screen.dart';
 import 'package:crafty_bay/Presentation/ui/utils/app_colors.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/color_picker.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/size_picker.dart';
@@ -144,11 +145,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ],
         ),
         const SizedBox(width: 8),
-        const Text(
-          "Review",
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: AppColors.themeColor,
+        TextButton(
+          onPressed: _onTapReviewButton,
+          child: const Text(
+            "Review",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: AppColors.themeColor,
+            ),
           ),
         ),
         const SizedBox(width: 8),
@@ -206,5 +210,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ],
       ),
     );
+  }
+
+  void _onTapReviewButton() {
+    Get.to(() => const ReviewsScreen());
   }
 }

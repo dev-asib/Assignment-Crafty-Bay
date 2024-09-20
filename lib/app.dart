@@ -58,7 +58,13 @@ class CraftyBay extends StatelessWidget {
               foregroundColor: AppColors.themeColor,
               textStyle: const TextStyle(
                 fontSize: 16,
-              )),
+              ),),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          elevation: 4,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+          backgroundColor: AppColors.themeColor,
+          foregroundColor: Colors.white,
         ),
       ),
     );
