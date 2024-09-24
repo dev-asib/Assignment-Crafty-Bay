@@ -77,4 +77,10 @@ class _ProductImageSliderState extends State<ProductImageSlider> {
       ],
     );
   }
+
+  @override
+  void dispose() {
+    _selectedIndex.dispose();
+    super.dispose();
+  }
 }
