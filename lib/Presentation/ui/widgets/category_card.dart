@@ -1,24 +1,24 @@
 import 'package:crafty_bay/Presentation/ui/screens/product_list_screen.dart';
 import 'package:crafty_bay/Presentation/ui/utils/app_colors.dart';
+import 'package:crafty_bay/data/models/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     super.key,
-    required this.iconData,
-    required this.label,
+    required this.categoryModel,
   });
 
-  final IconData iconData;
-  final String label;
+  final CategoryModel categoryModel;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Get.to(
-          () => const ProductListScreen(categoryName: 'Electronics'),
+          () =>
+              ProductListScreen(categoryName: categoryModel.categoryName ?? ''),
         );
       },
       child: Column(
@@ -29,15 +29,15 @@ class CategoryCard extends StatelessWidget {
               color: AppColors.themeColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(
-              iconData,
+            child: const Icon(
+              Icons.computer,
               size: 48,
               color: AppColors.themeColor,
             ),
           ),
           const SizedBox(height: 4),
           Text(
-            label,
+            categoryModel.categoryName ?? '',
             style: const TextStyle(
               color: AppColors.themeColor,
             ),
