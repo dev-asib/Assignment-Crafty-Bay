@@ -30,7 +30,7 @@ class WishListScreen extends StatelessWidget {
             mainAxisSpacing: 8,
           ),
           itemBuilder: (context, index) {
-            return const ProductCard();
+           // return const ProductCard();
           },
         ),
       ),

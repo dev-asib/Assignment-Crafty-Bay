@@ -1,6 +1,9 @@
 import 'package:crafty_bay/Presentation/state_holders/category_list_controller.dart';
 import 'package:crafty_bay/Presentation/state_holders/main_bottom_nav_controller.dart';
+import 'package:crafty_bay/Presentation/state_holders/new_product_list_controller.dart';
+import 'package:crafty_bay/Presentation/state_holders/popular_product_list_controller.dart';
 import 'package:crafty_bay/Presentation/state_holders/slider_list_controller.dart';
+import 'package:crafty_bay/Presentation/state_holders/special_product_list_controller.dart';
 import 'package:crafty_bay/Presentation/ui/screens/cart_screen.dart';
 import 'package:crafty_bay/Presentation/ui/screens/category_list_screen.dart';
 import 'package:crafty_bay/Presentation/ui/screens/home_screen.dart';
@@ -31,6 +34,9 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
     super.initState();
     Get.find<SliderListController>().getSliderList();
     Get.find<CategoryListController>().getCategoryList();
+    Get.find<NewProductListController>().getNewProductList();
+    Get.find<PopularProductListController>().getPopularProductList();
+    Get.find<SpecialProductListController>().getSpecialProductList();
   }
 
   @override
@@ -39,17 +45,18 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
       return Scaffold(
         body: _screens[_mainBottomNavController.selectedIndex],
         bottomNavigationBar: NavigationBar(
-            selectedIndex: _mainBottomNavController.selectedIndex,
-            onDestinationSelected: _mainBottomNavController.changeIndex,
-            destinations: const [
-              NavigationDestination(icon: Icon(Icons.home), label: "Home"),
-              NavigationDestination(
-                  icon: Icon(Icons.category), label: "Category"),
-              NavigationDestination(
-                  icon: Icon(Icons.shopping_cart), label: "Cart"),
-              NavigationDestination(
-                  icon: Icon(Icons.favorite_outline), label: "WishList"),
-            ]),
+          selectedIndex: _mainBottomNavController.selectedIndex,
+          onDestinationSelected: _mainBottomNavController.changeIndex,
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.home), label: "Home"),
+            NavigationDestination(
+                icon: Icon(Icons.category), label: "Category"),
+            NavigationDestination(
+                icon: Icon(Icons.shopping_cart), label: "Cart"),
+            NavigationDestination(
+                icon: Icon(Icons.favorite_outline), label: "WishList"),
+          ],
+        ),
       );
     });
   }
