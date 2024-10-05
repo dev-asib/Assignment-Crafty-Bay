@@ -18,7 +18,7 @@ class CategoryCard extends StatelessWidget {
       onTap: () {
         Get.to(
           () =>
-              ProductListScreen(categoryName: categoryModel.categoryName ?? ''),
+              ProductListScreen(category: categoryModel),
         );
       },
       child: Column(
@@ -29,11 +29,7 @@ class CategoryCard extends StatelessWidget {
               color: AppColors.themeColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(
-              Icons.computer,
-              size: 48,
-              color: AppColors.themeColor,
-            ),
+            child: Image.network(categoryModel.categoryImg ?? '', height: 60),
           ),
           const SizedBox(height: 4),
           Text(

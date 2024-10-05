@@ -49,45 +49,79 @@ class _HomeBannerSliderState extends State<HomeBannerSlider> {
               return Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 2),
-                decoration: BoxDecoration(color: AppColors.themeColor, borderRadius: BorderRadius.circular(8)),
-                alignment: Alignment.center,
-                child: Row(
+                decoration: BoxDecoration(
+                  color: AppColors.themeColor,
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                      image: NetworkImage(slider.image ?? ''), fit: BoxFit.fill),
+                ),
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Placeholder(
-                      fallbackHeight: 100,
-                      fallbackWidth: 100,
+                    Text(
+                      textAlign: TextAlign.center,
+                      slider.price ?? '',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: AppColors.themeColor,
+                            fontWeight: FontWeight.bold,
+                        fontSize: 18
+                          ),
                     ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            textAlign: TextAlign.center,
-                            slider.price ?? '',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(
-                                  color: AppColors.whiteColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: 100,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  foregroundColor: AppColors.themeColor),
-                              onPressed: () {},
-                              child: const Text("Buy now"),
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 100,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: AppColors.themeColor,
+                        ),
+                        onPressed: () {},
+                        child: const Text("Buy now"),
                       ),
                     ),
                   ],
                 ),
+
+                // child: Row(
+                //   children: [
+                //     const Placeholder(
+                //       fallbackHeight: 100,
+                //       fallbackWidth: 100,
+                //     ),
+                //     Expanded(
+                //       child: Column(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           Text(
+                //             textAlign: TextAlign.center,
+                //             slider.price ?? '',
+                //             style: Theme.of(context)
+                //                 .textTheme
+                //                 .titleLarge
+                //                 ?.copyWith(
+                //                   color: AppColors.whiteColor,
+                //                   fontWeight: FontWeight.bold,
+                //                 ),
+                //           ),
+                //           const SizedBox(height: 16),
+                //           SizedBox(
+                //             width: 100,
+                //             child: ElevatedButton(
+                //               style: ElevatedButton.styleFrom(
+                //                   backgroundColor: Colors.white,
+                //                   foregroundColor: AppColors.themeColor),
+                //               onPressed: () {},
+                //               child: const Text("Buy now"),
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ],
+                // ),
               );
             },
           );

@@ -1,20 +1,33 @@
+import 'package:crafty_bay/Presentation/state_holders/product_details_controller.dart';
 import 'package:crafty_bay/Presentation/ui/screens/reviews_screen.dart';
 import 'package:crafty_bay/Presentation/ui/utils/app_colors.dart';
-import 'package:crafty_bay/Presentation/ui/widgets/color_picker.dart';
+import 'package:crafty_bay/Presentation/ui/widgets/centered_circular_progress_indicator.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/size_picker.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/widgets.dart';
+import 'package:crafty_bay/data/models/product_details_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:item_count_number_button/item_count_number_button.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({super.key});
+  const ProductDetailsScreen({
+    super.key,
+    required this.id,
+  });
+
+  final int id;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Get.find<ProductDetialsController>().getProductDetails(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,53 +40,73 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
         title: const Text("Product Details"),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: _buildProductDetails(),
-          ),
-          _buildPriceAndAddToCartSection()
-        ],
-      ),
+      body: GetBuilder<ProductDetialsController>(
+          builder: (productDetailsController) {
+        if (productDetailsController.inProgress) {
+          return const CenteredCircularProgressIndicator();
+        }
+
+        if (productDetailsController.errorMessage != null) {
+          return Center(
+            child: Text(productDetailsController.errorMessage!),
+          );
+        }
+
+        return Column(
+          children: [
+            Expanded(
+              child: _buildProductDetails(
+                  productDetailsController.productDetailsModel!),
+            ),
+            _buildPriceAndAddToCartSection(
+                productDetailsController.productDetailsModel!)
+          ],
+        );
+      }),
     );
   }
 
-  Widget _buildProductDetails() {
+  Widget _buildProductDetails(ProductDetailsModel productDetails) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const ProductImageSlider(),
+          ProductImageSlider(
+            sliderUrls: [
+              productDetails.img1!,
+              productDetails.img2!,
+              productDetails.img3!,
+              productDetails.img4!,
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildNameAndQuantitySection(),
+                _buildNameAndQuantitySection(productDetails),
                 const SizedBox(height: 4),
-                _buildRatingAndReviewSection(),
+                _buildRatingAndReviewSection(productDetails),
                 const SizedBox(height: 8),
-                ColorPicker(
-                  colors: const [
-                    Colors.green,
-                    Colors.red,
-                    Colors.blue,
-                    Colors.black,
-                  ],
-                  onColorSelected: (color) {},
-                ),
-                const SizedBox(height: 16),
+                // ColorPicker(
+                //   colors: const [
+                //     Colors.green,
+                //     Colors.red,
+                //     Colors.blue,
+                //     Colors.black,
+                //   ],
+                //   onColorSelected: (color) {},
+                // ),
                 SizePicker(
-                  sizes: const [
-                    'S',
-                    'M',
-                    'L',
-                    'XL',
-                    "XXL",
-                  ],
+                  sizes: productDetails.color!.split(','),
                   onSizeSelected: (String selectedSize) {},
                 ),
                 const SizedBox(height: 16),
-                _buildDescriptionSection(),
+                SizePicker(
+                  sizes: productDetails.size!.split(','),
+                  onSizeSelected: (String selectedSize) {},
+                ),
+                const SizedBox(height: 16),
+                _buildDescriptionSection(productDetails),
               ],
             ),
           ),
@@ -82,7 +115,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _buildDescriptionSection() {
+  Widget _buildDescriptionSection(ProductDetailsModel productDetails) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,20 +124,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 8),
-        const Text(
-          '''Item Count Number Button is a Flutter package that allows you to easily implement a customizable item count widget with increment and decrement buttons. Item Count Number Button is a Flutter package that allows you to easily implement a customizable item count widget with increment and decrement buttons. This widget is particularly useful in scenarios where you need to manage the quantity of items, such as in a shopping cart or inventory management system.''',
-          style: TextStyle(color: Colors.black45),
+        Text(
+          productDetails.product?.shortDes ?? '',
+          style: const TextStyle(color: Colors.black45),
         ),
       ],
     );
   }
 
-  Widget _buildNameAndQuantitySection() {
+  Widget _buildNameAndQuantitySection(ProductDetailsModel productDetails) {
     return Row(
       children: [
         Expanded(
           child: Text(
-            "Nike show 2024 latest model - Happy new year special deal.",
+            productDetails.product?.title ?? '',
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
@@ -124,20 +157,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _buildRatingAndReviewSection() {
+  Widget _buildRatingAndReviewSection(ProductDetailsModel productDetails) {
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        const Wrap(
+        Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.star,
               color: Colors.amber,
             ),
             Text(
-              "4.2",
-              style: TextStyle(
+              "${productDetails.product?.star ?? ''}",
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black54,
               ),
@@ -174,7 +207,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _buildPriceAndAddToCartSection() {
+  Widget _buildPriceAndAddToCartSection(ProductDetailsModel productDetails) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -187,13 +220,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Price'),
+              const Text('Price'),
               Text(
-                '\$100',
-                style: TextStyle(
+                '\$${productDetails.product?.price}',
+                style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
                     color: AppColors.themeColor),

@@ -35,12 +35,18 @@ class CategoryListScreen extends StatelessWidget {
               return Center(
                 child: Text(categoryListController.errorMessage!),
               );
+            } else if (categoryListController.categoryList.isEmpty) {
+              return const Center(
+                child: Text("Category List Empty."),
+              );
             }
             return GridView.builder(
               itemCount: categoryListController.categoryList.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4,
                 childAspectRatio: 0.75,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
               ),
               itemBuilder: (context, index) {
                 return CategoryCard(
