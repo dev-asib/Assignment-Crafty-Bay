@@ -135,8 +135,9 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
 
   Future<void> _onTapNextButton() async {
     bool result = await _otpVerificationController.verifyOtp(
-        widget.email, _otpTEController.text);
-    Get.to(() => const CompleteProfileScreen());
+      widget.email,
+      _otpTEController.text,
+    );
 
     if (result) {
       Get.to(() => const CompleteProfileScreen());

@@ -251,6 +251,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     bool isLoggedInUser = await Get.find<AuthController>().isLoginUser();
 
     if (isLoggedInUser) {
+
     } else {
       Get.to(
         () => const EmailVerificationScreen(),
