@@ -12,4 +12,10 @@ class Urls {
 
   static String productDetailsById(int id) =>
       "$_baseUrl/ProductDetailsById/$id";
+
+  static String verifyEmailUrl(String email) =>
+      "$_baseUrl/UserLogin/$email";
+
+  static String verifyOtpUrl(String email, String otp) =>
+      "$_baseUrl/VerifyLogin/$email/$otp";
 }

@@ -1,4 +1,6 @@
+import 'package:crafty_bay/Presentation/state_holders/auth_controller.dart';
 import 'package:crafty_bay/Presentation/state_holders/product_details_controller.dart';
+import 'package:crafty_bay/Presentation/ui/screens/email_verification_screen.dart';
 import 'package:crafty_bay/Presentation/ui/screens/reviews_screen.dart';
 import 'package:crafty_bay/Presentation/ui/utils/app_colors.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/centered_circular_progress_indicator.dart';
@@ -236,7 +238,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           SizedBox(
             width: 140,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: _onTapAddToCart,
               child: const Text("Add To Cart"),
             ),
           ),
@@ -245,7 +247,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
+  void _onTapAddToCart() async {
+    bool isLoggedInUser = await Get.find<AuthController>().isLoginUser();
+
+    if (isLoggedInUser) {
+    } else {
+      Get.to(
+        () => const EmailVerificationScreen(),
+      );
+    }
+  }
+
   void _onTapReviewButton() {
     Get.to(() => const ReviewsScreen());
   }
 }
+

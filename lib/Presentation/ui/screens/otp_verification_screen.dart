@@ -1,13 +1,21 @@
 import 'package:crafty_bay/Presentation/state_holders/otp_verification_controller.dart';
+import 'package:crafty_bay/Presentation/state_holders/timer_controller.dart';
 import 'package:crafty_bay/Presentation/ui/screens/complete_profile_screen.dart';
 import 'package:crafty_bay/Presentation/ui/utils/app_colors.dart';
+import 'package:crafty_bay/Presentation/ui/utils/snack_message.dart';
 import 'package:crafty_bay/Presentation/ui/widgets/app_logo_widget.dart';
+import 'package:crafty_bay/Presentation/ui/widgets/centered_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OTPVerificationScreen extends StatefulWidget {
-  const OTPVerificationScreen({super.key});
+  const OTPVerificationScreen({
+    super.key,
+    required this.email,
+  });
+
+  final String email;
 
   @override
   State<OTPVerificationScreen> createState() => _OTPVerificationScreenState();
@@ -16,13 +24,14 @@ class OTPVerificationScreen extends StatefulWidget {
 class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
   final TextEditingController _otpTEController = TextEditingController();
 
-  final OTPVerificationController otpVerificationController =
-      OTPVerificationController();
+  final TimerController _timerController = Get.find<TimerController>();
+  final OtpVerificationController _otpVerificationController =
+      Get.find<OtpVerificationController>();
 
   @override
   void initState() {
     super.initState();
-    otpVerificationController.startTimer();
+    _timerController.startTimer();
   }
 
   @override
@@ -69,10 +78,17 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 appContext: context,
               ),
               const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: _onTapNextButton,
-                child: const Text("Next"),
-              ),
+              GetBuilder<OtpVerificationController>(
+                  builder: (otpVerificationController) {
+                return Visibility(
+                  visible: !otpVerificationController.inProgress,
+                  replacement: const CenteredCircularProgressIndicator(),
+                  child: ElevatedButton(
+                    onPressed: _onTapNextButton,
+                    child: const Text("Next"),
+                  ),
+                );
+              }),
               const SizedBox(height: 16),
               Obx(
                 () => RichText(
@@ -83,7 +99,7 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                     text: "The code will be expire ",
                     children: [
                       TextSpan(
-                        text: "${otpVerificationController.remainingSeconds}",
+                        text: "${_timerController.remainingSeconds}",
                         style: const TextStyle(
                           color: AppColors.themeColor,
                         ),
@@ -95,15 +111,15 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
               const SizedBox(height: 8),
               Obx(
                 () => TextButton(
-                  onPressed: otpVerificationController.remainingSeconds > 0
+                  onPressed: _timerController.remainingSeconds > 0
                       ? null
                       : () {
-                          otpVerificationController.resetTimer();
+                          _timerController.resetTimer();
                         },
                   child: Text(
                     "Resend Code",
                     style: TextStyle(
-                      color: otpVerificationController.remainingSeconds > 0
+                      color: _timerController.remainingSeconds > 0
                           ? Colors.grey
                           : AppColors.themeColor,
                     ),
@@ -117,13 +133,26 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
     );
   }
 
-  void _onTapNextButton() {
-    Get.to(()=> const CompleteProfileScreen());
+  Future<void> _onTapNextButton() async {
+    bool result = await _otpVerificationController.verifyOtp(
+        widget.email, _otpTEController.text);
+    Get.to(() => const CompleteProfileScreen());
+
+    if (result) {
+      Get.to(() => const CompleteProfileScreen());
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+          context,
+          _otpVerificationController.errorMessage!,
+        );
+      }
+    }
   }
 
   @override
   void dispose() {
-    otpVerificationController.onClose();
+    _timerController.onClose();
     super.dispose();
   }
 }

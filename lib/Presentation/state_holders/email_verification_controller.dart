@@ -3,7 +3,7 @@ import 'package:crafty_bay/data/services/network_caller.dart';
 import 'package:crafty_bay/data/utils/urls.dart';
 import 'package:get/get.dart';
 
-class OtpVerificationController extends GetxController {
+class EmailVerificationController extends GetxController {
   bool _inProgress = false;
   String? _errorMessage;
 
@@ -11,14 +11,14 @@ class OtpVerificationController extends GetxController {
 
   String? get errorMessage => _errorMessage;
 
-  Future<bool> verifyOtp(String email, String otp) async {
+  Future<bool> verifyEmail(String email) async {
     bool isSuccess = false;
 
     _inProgress = true;
     update();
 
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
-      url: Urls.verifyOtpUrl(email, otp),
+      url: Urls.verifyEmailUrl(email),
     );
 
     if (response.isSuccess && response.responseData['msg'] == 'success') {
